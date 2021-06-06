@@ -7,31 +7,45 @@ using System;
 public  class Server : MonoBehaviour
 {
 
-    [SerializeField]
-    private int noOfGoodPackets = 0;
-    [SerializeField]
-    private int noOfBadPacketsTerminated = 0;
 
+    //Maximum Health of the player
     [SerializeField]
-    int health = 10;
+    float MaxHealth = 10f;
+
+    //Maximum Good Packets to capture to get shield
+    [SerializeField]
+    int MaxAntivirusBoost = 5;
+
+    //Maximum Bad Packets to destroy to create a new client
+    [SerializeField]
+     int MaxVirusTermination = 5;
+
+    //health of player
+    float currentHealth ;
 
     bool shieldUp = false;
 
     [SerializeField]
     GameObject shield;
 
+    //variables to check for achievments
+    int tempTerminationPackages=0;
     int tempGoodPackets = 0;
 
-    public static event Action UpClient;
+    //Total good packets Captured
+    int totalGoodPackets = 0;
+    //Total bad packets terminated
+    int totalBadPacketsTerminated = 0;
 
+
+    public static event Action UpClient;
     public static event Action<int> VirusTerminated;
     public static event Action<int> GoodPacketRecieved;
-    public static event Action<int> HealthUpdate;
-    public static event Action<int> AntiVirusUpdate;
+    public static event Action<float,float> HealthUpdate;
+    public static event Action<float,int> AntiVirusUpdate;
+    public static event Action<float, float> CameraEvent;
 
 
-    [SerializeField]
-    int tempTerminationPackages;
 
     private void OnEnable()
     {
@@ -51,27 +65,31 @@ public  class Server : MonoBehaviour
     void Start()
     {
         tempGoodPackets = 0;
-        health = 10;
-        HealthUpdate?.Invoke(health);
-        AntiVirusUpdate?.Invoke(tempGoodPackets);
+        currentHealth = MaxHealth;
+        HealthUpdate?.Invoke(currentHealth,MaxHealth);
+        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (tempTerminationPackages >= 5)
+        if (tempTerminationPackages >= MaxVirusTermination)
         {
             tempTerminationPackages = 0;
             UpClient?.Invoke();
+            //CamersShake.Instance.WidenRange(ClientManager.Instance.generation);
         }
 
-        if (tempGoodPackets >= 5)
+        
+        if (tempGoodPackets >= MaxAntivirusBoost)
         {
             tempGoodPackets = 0;
             shieldUp = true;
             StartCoroutine(ShieldUp());
         }
-        if (health < 0)
+
+        //Player Dies if Health Reaches Zero
+        if (currentHealth <= 0)
         {
             SceneManager.LoadScene(0);
         }
@@ -81,27 +99,28 @@ public  class Server : MonoBehaviour
 
     void UpdateGoodPacket()
     {
-        noOfGoodPackets += 1;
-        GoodPacketRecieved?.Invoke(noOfGoodPackets);
+        totalGoodPackets += 1;
+        GoodPacketRecieved?.Invoke(totalGoodPackets);
         if (!shieldUp)
         {
             tempGoodPackets += 1;
-            AntiVirusUpdate?.Invoke(tempGoodPackets);
+            AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
         }
     }
 
     void UpdateVirusPackets()
     {
-        noOfBadPacketsTerminated += 1;
+        totalBadPacketsTerminated += 1;
         tempTerminationPackages +=1;
-        VirusTerminated?.Invoke(noOfBadPacketsTerminated);
+        VirusTerminated?.Invoke(totalBadPacketsTerminated);
     }
 
     void RecieveDamage()
     {
         if (shieldUp) return;
-        health -= 1;
-        HealthUpdate?.Invoke(health);
+        currentHealth -= 1;
+        CameraEvent?.Invoke(5f, 0.3f);
+        HealthUpdate?.Invoke(currentHealth,MaxHealth);
     }
 
     IEnumerator ShieldUp()
@@ -109,7 +128,7 @@ public  class Server : MonoBehaviour
         shield.gameObject.SetActive(true);
         yield return new WaitForSeconds(10);
         shieldUp = false;
-        AntiVirusUpdate?.Invoke(tempGoodPackets);
+        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
         shield.gameObject.SetActive(false);
     }
 }

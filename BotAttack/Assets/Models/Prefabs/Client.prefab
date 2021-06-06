@@ -44,20 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef31c8f237aecb4da013f11ef115500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformOne: {fileID: 0}
   goodPacket: {fileID: 6275170486059680828, guid: b2e10bf75ce2a7848a14bf90f41d22b0,
     type: 3}
   badPacket: {fileID: 2510080053375056883, guid: fde2a3bb52569ef48ba63661440aee44,
     type: 3}
-  speed: 3
-  offset: 0
-  currentSpawnRate: 5
-  elapsedTime: 0
-  cylinderPrefab: {fileID: 153740680793374281, guid: c58396b38258dcc4c9af78565cc70d65,
+  speed: 1
+  maxSpeed: 8
+  currentPacketSpawnRate: 10
+  minimumPacketSpawnRate: 1
+  linePrefab: {fileID: 153740680793374281, guid: c58396b38258dcc4c9af78565cc70d65,
     type: 3}
-  BadConnection: {fileID: 2100000, guid: 5fd8805212e33e74583ca0df7cf5cfb4, type: 2}
-  GoodConnection: {fileID: 2100000, guid: 9b37caefba8158749acc1e0c42555699, type: 2}
-  NullConnection: {fileID: 2100000, guid: 92bc172c9a4f51041a3d3054c198b808, type: 2}
+  BadConnectionColor: {r: 1, g: 0, b: 0, a: 1}
+  GoodConnectionColor: {r: 0, g: 1, b: 0, a: 1}
+  NullConnectionColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!95 &6939128762350182964
 Animator:
   serializedVersion: 3

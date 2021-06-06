@@ -44,13 +44,17 @@ public class UIManager : MonoBehaviour
         totalGoodPacketsCount.text = "Good Packets: " + value.ToString();
     }
 
-    public void DisplayHealth(int value)
+    public void DisplayHealth(float valueIn,float maxValue)
     {
+        float value = healthSlider.maxValue / maxValue;
+        value = value * valueIn;
         healthSlider.value = value;
     }
 
-    public void DisplayAntiVirusBar(int value)
+    public void DisplayAntiVirusBar(float valueIn,int maxValue)
     {
+        float value = antiVirusSlider.maxValue / maxValue;
+        value = value * valueIn;
         antiVirusSlider.value = value;
     }
 

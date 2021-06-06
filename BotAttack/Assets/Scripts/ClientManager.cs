@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ClientManager : MonoBehaviour
 {
-    List<Transform> clientTransforms=new List<Transform>();    // Start is called before the first frame update
+
+    List<Transform> clientTransforms=new List<Transform>();    
    
 
     [SerializeField]
@@ -14,6 +16,9 @@ public class ClientManager : MonoBehaviour
 
     [SerializeField]
     GameObject startinPosition;
+
+    public static event Action RowCreated;
+
 
     private void OnEnable()
     {
@@ -56,9 +61,10 @@ public class ClientManager : MonoBehaviour
         Vector3 random;
         if (mod == 0)
         {
-            Vector3 pos = Vector3.right * Random.Range(0f, 5f);
+            Vector3 pos = Vector3.right * UnityEngine.Random.Range(0f, 5f);
             offset = Vector3.back * 10+pos;
             direction *= -1;
+            RowCreated?.Invoke();
         }
         else
         {

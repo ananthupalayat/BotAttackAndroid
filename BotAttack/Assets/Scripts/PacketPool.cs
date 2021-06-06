@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PacketPool : MonoBehaviour
 {
-    private Dictionary<string, Queue<GameObject>> packetPool = new Dictionary<string, Queue<GameObject>>();
+    Dictionary<string, Queue<GameObject>> packetPool = new Dictionary<string, Queue<GameObject>>();
 
     public GameObject GetPacket(GameObject packet)
     {

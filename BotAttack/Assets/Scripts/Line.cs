@@ -5,6 +5,7 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     GameObject parent;
+
     private void Awake()
     {
         parent = transform.root.gameObject;

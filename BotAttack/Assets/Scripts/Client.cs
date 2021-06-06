@@ -8,12 +8,7 @@ using UnityEngine.UI;
 public class Client : MonoBehaviour
 {
 
-    [SerializeField]
-    Transform TransformOne;
-
-    private Transform TransformTwo;
-
-
+    
 
     [SerializeField]
     GameObject goodPacket;
@@ -22,16 +17,20 @@ public class Client : MonoBehaviour
     GameObject badPacket;
 
 
-    public float speed;
+    [SerializeField]
+     float speed=2f;
 
+    [SerializeField]
+     float maxSpeed = 8f;
     
-    public int offset;
 
     [SerializeField]
-    float currentSpawnRate = 5f;
+    float currentPacketSpawnRate = 10f;
+
     [SerializeField]
+    float minimumPacketSpawnRate = 1f;
+
     float elapsedTime;
-
     float bigCountDown = 10; 
     float currentBigTime = 0;
 
@@ -40,43 +39,40 @@ public class Client : MonoBehaviour
 
     bool someOneOnLine = false;
 
+    [SerializeField]
+    GameObject linePrefab;
+    GameObject line;
+
+     int offset;
+     MeshRenderer lineMaterial;
+
+    [SerializeField]
+    Color BadConnectionColor=Color.red;
+    [SerializeField]
+    Color GoodConnectionColor=Color.green;
+    [SerializeField]
+    Color NullConnectionColor=Color.grey;
+
+    bool lineActive=true;
+
+    
+    PacketPool packetPool;
+
+
     public static event Action recieveGoodPacket;
     public static event Action DestroyedBadPacket;
     public static event Action VirusDamage;
 
-
-    [SerializeField]
-    GameObject cylinderPrefab;
-
-    GameObject cylinder;
-
-    bool lineActive=true;
-
-    [SerializeField]
-    Material BadConnection;
-    [SerializeField]
-    Material GoodConnection;
-    [SerializeField]
-    Material NullConnection;
-
-    private MeshRenderer lineMaterial;
-
-    private PacketPool packetPool;
-
     private void Awake()
     {
-        TransformOne = GameObject.Find("Server").transform;
-        TransformTwo = transform;
-        startPos = TransformTwo.position;
-        endPos = TransformOne.position;
+        endPos = GameObject.Find("Server").transform.position;
+        startPos = transform.position;
         CreateCylinderBetweenPoints(startPos, endPos, 0.5f);
-        lineMaterial=cylinder.GetComponent<MeshRenderer>();
-        lineMaterial.material = GoodConnection;
+
+        lineMaterial=line.GetComponent<MeshRenderer>();
+        lineMaterial.material.color = GoodConnectionColor;
     }
 
-    
-
-    
 
     void Start()
     {
@@ -91,21 +87,23 @@ public class Client : MonoBehaviour
         elapsedTime += Time.deltaTime;
         currentBigTime += Time.deltaTime;
 
-        if (elapsedTime >= currentSpawnRate && someOneOnLine==false && lineActive)
+        if (elapsedTime >= currentPacketSpawnRate && someOneOnLine==false && lineActive)
         {
             CreatePacket();
             elapsedTime = 0;
         }
 
-        if (currentBigTime >= bigCountDown)
+        if (currentBigTime >= bigCountDown && lineActive)
         {
-            if (currentSpawnRate == 1)
+            if (currentPacketSpawnRate == minimumPacketSpawnRate || speed==maxSpeed )
             {
-                currentSpawnRate = 1; 
+                speed = maxSpeed;
+                currentPacketSpawnRate = minimumPacketSpawnRate; 
             }
             else
             {
-                currentSpawnRate -= 1f;
+                currentPacketSpawnRate -= 0.5f;
+                speed += 0.5f;
             }
             currentBigTime = 0;
         }
@@ -121,22 +119,22 @@ public class Client : MonoBehaviour
         GameObject packetSpawn;
         if (id == 1)
         {
-            lineMaterial.material = BadConnection;
+            lineMaterial.material.color = BadConnectionColor;
             packetSpawn = packetPool.GetPacket(badPacket);
             
         }
         else
         {
-            lineMaterial.material = GoodConnection;
+            lineMaterial.material.color = GoodConnectionColor;
             packetSpawn = packetPool.GetPacket(goodPacket);
         }
         packetSpawn.transform.position = startPos;
         someOneOnLine = true;
-        StartCoroutine(TestMove(packetSpawn));
+        StartCoroutine(MovePacket(packetSpawn));
         
     }
 
-    IEnumerator TestMove(GameObject packetIn)
+    IEnumerator MovePacket(GameObject packetIn)
     {
         if (!lineActive) yield return null;
 
@@ -184,10 +182,9 @@ public class Client : MonoBehaviour
     IEnumerator ReconnectLine()
     {
         yield return new WaitForSeconds(5);
-        //cylinder.SetActive(true);
         someOneOnLine = false;
         lineActive = true;
-        lineMaterial.material = GoodConnection;
+        lineMaterial.material.color = GoodConnectionColor;
         
     }
 
@@ -197,16 +194,16 @@ public class Client : MonoBehaviour
         var scale = new Vector3(width, offset.magnitude / 2.0f, width);
         var position = start + (offset / 2.0f);
 
-        cylinder = Instantiate(cylinderPrefab, position, Quaternion.identity,transform);
-        cylinder.transform.up = offset;
-        cylinder.transform.localScale = scale;
+        line = Instantiate(linePrefab, position, Quaternion.identity,transform);
+        line.transform.up = offset;
+        line.transform.localScale = scale;
     }
 
     public void DisconnectLine()
     {
         lineActive = false;
         StartCoroutine(ReconnectLine());
-        lineMaterial.material = NullConnection;
+        lineMaterial.material.color = NullConnectionColor;
     }
     
     
