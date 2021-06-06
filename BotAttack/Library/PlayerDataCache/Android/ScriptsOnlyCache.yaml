@@ -1,9 +1,9 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - ClientCreator
+    - Client
+    - ClientManager
     - Line
-    - Manager
     - PacketPool
     - PacketReturn
     - Server
@@ -19,8 +19,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -70,41 +72,41 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11176}
+      Script: {instanceID: 11178}
     - Class: 114
-      Script: {instanceID: 11376}
+      Script: {instanceID: 11378}
     - Class: 114
-      Script: {instanceID: 11552}
+      Script: {instanceID: 11554}
     - Class: 114
-      Script: {instanceID: 11652}
+      Script: {instanceID: 11654}
     - Class: 114
-      Script: {instanceID: 11690}
+      Script: {instanceID: 11692}
     - Class: 114
-      Script: {instanceID: 11746}
+      Script: {instanceID: 11748}
     - Class: 114
-      Script: {instanceID: 11766}
+      Script: {instanceID: 11768}
     - Class: 114
-      Script: {instanceID: 11792}
+      Script: {instanceID: 11794}
     - Class: 114
-      Script: {instanceID: 11988}
+      Script: {instanceID: 11990}
     - Class: 114
-      Script: {instanceID: 12032}
+      Script: {instanceID: 12034}
     - Class: 114
-      Script: {instanceID: 12372}
+      Script: {instanceID: 12374}
     - Class: 114
-      Script: {instanceID: 12386}
+      Script: {instanceID: 12388}
     - Class: 114
-      Script: {instanceID: 12568}
+      Script: {instanceID: 12570}
     - Class: 114
-      Script: {instanceID: 12630}
+      Script: {instanceID: 12632}
     - Class: 114
-      Script: {instanceID: 12776}
+      Script: {instanceID: 12778}
     - Class: 114
-      Script: {instanceID: 12978}
+      Script: {instanceID: 12980}
     - Class: 114
-      Script: {instanceID: 13006}
+      Script: {instanceID: 13008}
     - Class: 114
-      Script: {instanceID: 13010}
+      Script: {instanceID: 13012}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -287,7 +289,7 @@ ScriptsOnlyBuild:
       Hash: fa2d54784358712985c1b94b8f131128
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ClientCreator
+    className: ClientManager
   - hash:
       serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
@@ -569,7 +571,7 @@ ScriptsOnlyBuild:
       Hash: 8d51db0fe81caab5838fd3aa533f271e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Manager
+    className: Client
   - hash:
       serializedVersion: 2
       Hash: 7072231382eb3c4871b3dd75ad0227e1
@@ -591,4 +593,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/complete shooter/Prototype/Apk/1.apk
+  playerPath: D:/UnderDogs/BotAttackAndroid/BotAttack/Apk/1.apk
