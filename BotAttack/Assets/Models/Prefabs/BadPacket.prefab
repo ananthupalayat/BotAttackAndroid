@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3520773182183085715}
   - component: {fileID: -4565353789621228400}
   m_Layer: 0
-  m_Name: Virus
+  m_Name: BadPacket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2510080053375056883}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.6303654, y: 0, z: 5.222166}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

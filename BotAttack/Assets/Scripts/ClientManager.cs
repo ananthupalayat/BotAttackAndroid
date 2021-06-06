@@ -37,7 +37,7 @@ public class ClientManager : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         var start = Instantiate(client, startinPosition.transform.position, Quaternion.identity);
         clientTransforms.Add(start.transform);
         for (int i = 0; i < 2; i++)

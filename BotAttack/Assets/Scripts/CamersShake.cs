@@ -52,7 +52,7 @@ public class CamersShake : MonoBehaviour
     {
         widenTimer = 5;
         widenTimerTotal = widenTimer;
-        offset = transform.position + Vector3.back *5f;
+        offset = transform.position + Vector3.back *8f;
         startingFOV = cineMachineVirtualCamera.m_Lens.FieldOfView;
         targetFOV = startingFOV + 1;
     }

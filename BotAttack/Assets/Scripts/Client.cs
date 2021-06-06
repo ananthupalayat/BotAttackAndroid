@@ -16,6 +16,11 @@ public class Client : MonoBehaviour
     [SerializeField]
     GameObject badPacket;
 
+    [SerializeField]
+    GameObject goodPacketBurst;
+
+    [SerializeField]
+    GameObject badPacketBurst;
 
     [SerializeField]
      float speed=2f;
@@ -51,7 +56,7 @@ public class Client : MonoBehaviour
     [SerializeField]
     Color GoodConnectionColor=Color.green;
     [SerializeField]
-    Color NullConnectionColor=Color.grey;
+    Color NullConnectionColor=Color.black;
 
     bool lineActive=true;
 
@@ -63,8 +68,12 @@ public class Client : MonoBehaviour
     public static event Action DestroyedBadPacket;
     public static event Action VirusDamage;
 
+    Animator animator;
+    
     private void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
+        animator.SetTrigger("Entry");
         endPos = GameObject.Find("Server").transform.position;
         startPos = transform.position;
         CreateCylinderBetweenPoints(startPos, endPos, 0.5f);
@@ -114,6 +123,7 @@ public class Client : MonoBehaviour
 
     void CreatePacket()
     {
+        animator.SetTrigger("Pop");
         if (!lineActive) return;
         int id = UnityEngine.Random.Range(0, 2);
         GameObject packetSpawn;
@@ -136,8 +146,12 @@ public class Client : MonoBehaviour
 
     IEnumerator MovePacket(GameObject packetIn)
     {
-        if (!lineActive) yield return null;
-
+        GameObject burst;
+        if (!lineActive)
+        {
+            yield return null;
+        } 
+        
         while (packetIn.transform.position != endPos)
         {
             if (!lineActive)
@@ -145,14 +159,20 @@ public class Client : MonoBehaviour
                 someOneOnLine = false;
                 if (packetIn.name == "BadPacket")
                 {
-                    
+                    burst= packetPool.GetPacket(badPacketBurst);
+                    burst.transform.position = packetIn.transform.position;
+                    StartCoroutine(TurnOffParticleSystem(burst));
                     DestroyedBadPacket?.Invoke();
                     packetIn.SetActive(false);
+                    
                 }
                 else
                 {
-                   
+                    burst = packetPool.GetPacket(goodPacketBurst);
+                    burst.transform.position = packetIn.transform.position;
+                    StartCoroutine(TurnOffParticleSystem(burst));
                     packetIn.SetActive(false);
+                    
                 }
                 
                 yield break;
@@ -169,13 +189,19 @@ public class Client : MonoBehaviour
         someOneOnLine = false;
         if (packetIn.name == "BadPacket")
         {
+            burst = packetPool.GetPacket(badPacketBurst);
+            burst.transform.position = packetIn.transform.position;
+            StartCoroutine(TurnOffParticleSystem(burst));
             VirusDamage?.Invoke();
+            
         }
         else
         {
+            burst = packetPool.GetPacket(goodPacketBurst);
+            burst.transform.position = packetIn.transform.position;
+            StartCoroutine(TurnOffParticleSystem(burst));
             recieveGoodPacket?.Invoke();
         }
-        
         packetIn.SetActive(false);
     }
 
@@ -206,7 +232,11 @@ public class Client : MonoBehaviour
         lineMaterial.material.color = NullConnectionColor;
     }
     
-    
+    IEnumerator TurnOffParticleSystem(GameObject particleSystem)
+    {
+        yield return new WaitForSeconds(2);
+        particleSystem.SetActive(false);
+    }
     
 }
 

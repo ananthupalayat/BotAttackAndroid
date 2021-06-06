@@ -48,6 +48,10 @@ MonoBehaviour:
     type: 3}
   badPacket: {fileID: 2510080053375056883, guid: fde2a3bb52569ef48ba63661440aee44,
     type: 3}
+  goodPacketBurst: {fileID: 2399810940717448826, guid: 8c3f04dcae63542488aed868faed54d2,
+    type: 3}
+  badPacketBurst: {fileID: 7343676437771027425, guid: 4719c95d6086a1444baa03d9f90e572c,
+    type: 3}
   speed: 1
   maxSpeed: 8
   currentPacketSpawnRate: 10
@@ -56,7 +60,7 @@ MonoBehaviour:
     type: 3}
   BadConnectionColor: {r: 1, g: 0, b: 0, a: 1}
   GoodConnectionColor: {r: 0, g: 1, b: 0, a: 1}
-  NullConnectionColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  NullConnectionColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
 --- !u!95 &6939128762350182964
 Animator:
   serializedVersion: 3
@@ -158,6 +162,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Computer
       objectReference: {fileID: 0}
+    - target: {fileID: 7478314409898409674, guid: d511620e20fc09c4d91b5a4fc4ae8d7c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f492caa5f30e43f4ba156eb451e431eb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d511620e20fc09c4d91b5a4fc4ae8d7c, type: 3}
 --- !u!1 &4567893363430654229 stripped
