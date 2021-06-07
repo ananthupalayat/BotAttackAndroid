@@ -37,6 +37,8 @@ public  class Server : MonoBehaviour
     //Total bad packets terminated
     int totalBadPacketsTerminated = 0;
 
+    Animator animator;
+
 
     public static event Action UpClient;
     public static event Action<int> VirusTerminated;
@@ -52,6 +54,8 @@ public  class Server : MonoBehaviour
         Client.recieveGoodPacket += UpdateGoodPacket;
         Client.DestroyedBadPacket += UpdateVirusPackets;
         Client.VirusDamage += RecieveDamage;
+        Client.recieveGoodPacket += ServerJiggle;
+        Client.VirusDamage += ServerJiggle;
     }
 
     private void OnDisable()
@@ -59,6 +63,8 @@ public  class Server : MonoBehaviour
         Client.recieveGoodPacket -= UpdateGoodPacket;
         Client.DestroyedBadPacket -= UpdateVirusPackets;
         Client.VirusDamage -= RecieveDamage;
+        Client.recieveGoodPacket -= ServerJiggle;
+        Client.VirusDamage -= ServerJiggle;
     }
 
     // Start is called before the first frame update
@@ -68,6 +74,8 @@ public  class Server : MonoBehaviour
         currentHealth = MaxHealth;
         HealthUpdate?.Invoke(currentHealth,MaxHealth);
         AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
+        animator = GetComponentInChildren<Animator>();
+        animator.SetTrigger("Entry");
     }
 
     // Update is called once per frame
@@ -130,5 +138,10 @@ public  class Server : MonoBehaviour
         shieldUp = false;
         AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
         shield.gameObject.SetActive(false);
+    }
+
+    void ServerJiggle()
+    {
+        animator.SetTrigger("Jiggle");
     }
 }

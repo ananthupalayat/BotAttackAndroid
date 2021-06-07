@@ -76,7 +76,7 @@ public class Client : MonoBehaviour
         animator.SetTrigger("Entry");
         endPos = GameObject.Find("Server").transform.position;
         startPos = transform.position;
-        CreateCylinderBetweenPoints(startPos, endPos, 0.5f);
+        CreateLineBetweenPoints(startPos, endPos, 0.5f);
 
         lineMaterial=line.GetComponent<MeshRenderer>();
         lineMaterial.material.color = GoodConnectionColor;
@@ -141,7 +141,7 @@ public class Client : MonoBehaviour
         packetSpawn.transform.position = startPos;
         someOneOnLine = true;
         StartCoroutine(MovePacket(packetSpawn));
-        
+        packetSpawn = null;
     }
 
     IEnumerator MovePacket(GameObject packetIn)
@@ -152,6 +152,7 @@ public class Client : MonoBehaviour
             yield return null;
         } 
         
+        //Packet Moving to end of line
         while (packetIn.transform.position != endPos)
         {
             if (!lineActive)
@@ -164,7 +165,6 @@ public class Client : MonoBehaviour
                     StartCoroutine(TurnOffParticleSystem(burst));
                     DestroyedBadPacket?.Invoke();
                     packetIn.SetActive(false);
-                    
                 }
                 else
                 {
@@ -186,6 +186,8 @@ public class Client : MonoBehaviour
             }
             
         }
+
+        //Packet reached end of line
         someOneOnLine = false;
         if (packetIn.name == "BadPacket")
         {
@@ -210,11 +212,11 @@ public class Client : MonoBehaviour
         yield return new WaitForSeconds(5);
         someOneOnLine = false;
         lineActive = true;
-        lineMaterial.material.color = GoodConnectionColor;
+        lineMaterial.material.color = NullConnectionColor;
         
     }
 
-    void CreateCylinderBetweenPoints(Vector3 start, Vector3 end, float width)
+    void CreateLineBetweenPoints(Vector3 start, Vector3 end, float width)
     {
         var offset = end - start;
         var scale = new Vector3(width, offset.magnitude / 2.0f, width);
