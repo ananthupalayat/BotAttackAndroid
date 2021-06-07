@@ -6,6 +6,12 @@ public class PacketPool : MonoBehaviour
 {
     Dictionary<string, Queue<GameObject>> packetPool = new Dictionary<string, Queue<GameObject>>();
 
+    /// <summary>
+    /// Produces packet when in need from respective pool
+    /// if not found create a new pool for that game object
+    /// </summary>
+    /// <param name="packet"></param>
+    /// <returns></returns>
     public GameObject GetPacket(GameObject packet)
     {
         if(packetPool.TryGetValue(packet.name,out Queue<GameObject> packetList))
@@ -35,6 +41,10 @@ public class PacketPool : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Returns packet to their respective pool
+    /// </summary>
+    /// <param name="packet"></param>
     public void ReturnPacket(GameObject packet)
     {
         if(packetPool.TryGetValue(packet.name,out Queue<GameObject> packetList))

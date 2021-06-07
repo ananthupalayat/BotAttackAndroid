@@ -52,7 +52,7 @@ MonoBehaviour:
     type: 3}
   badPacketBurst: {fileID: 7343676437771027425, guid: 4719c95d6086a1444baa03d9f90e572c,
     type: 3}
-  speed: 1
+  speed: 3
   maxSpeed: 8
   currentPacketSpawnRate: 10
   minimumPacketSpawnRate: 1

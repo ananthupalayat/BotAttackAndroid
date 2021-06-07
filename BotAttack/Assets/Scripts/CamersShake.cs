@@ -15,14 +15,11 @@ public class CamersShake : MonoBehaviour
     float widenTimerTotal;
     
     Vector3 offset;
-    float startingFOV;
-    float targetFOV;
+    
 
     private void Awake()
     {
-        
         cineMachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
-        
     }
 
     private void OnEnable()
@@ -37,6 +34,11 @@ public class CamersShake : MonoBehaviour
         ClientManager.RowCreated -= WidenRange;
     }
 
+    /// <summary>
+    /// Shakes camera whenever damage is taken
+    /// </summary>
+    /// <param name="intensity">intenstiy of shake</param>
+    /// <param name="time">duration of shake</param>
     public void ShakeCamera(float intensity,float time)
     {
         CinemachineBasicMultiChannelPerlin cinemachineBasicMultichannelPerlin =
@@ -48,13 +50,17 @@ public class CamersShake : MonoBehaviour
         shakerTimer = time;
     }
 
+    /// <summary>
+    /// Used to widen view whenever a new row is created ont the back
+    /// </summary>
     public void WidenRange()
     {
         widenTimer = 5;
         widenTimerTotal = widenTimer;
         offset = transform.position + Vector3.back *8f;
-        startingFOV = cineMachineVirtualCamera.m_Lens.FieldOfView;
-        targetFOV = startingFOV + 1;
+
+        //startingFOV = cineMachineVirtualCamera.m_Lens.FieldOfView;
+        //targetFOV = startingFOV + 1;
     }
 
     private void Update()
@@ -75,8 +81,9 @@ public class CamersShake : MonoBehaviour
             widenTimer -= Time.deltaTime;
             transform.position = 
                 Vector3.Lerp(transform.position, offset, (1 - (widenTimer / widenTimerTotal)));
-            cineMachineVirtualCamera.m_Lens.FieldOfView =
-                Mathf.Lerp(startingFOV,targetFOV, (1 - (widenTimer / widenTimerTotal))) ;
+
+            //cineMachineVirtualCamera.m_Lens.FieldOfView =
+            //    Mathf.Lerp(startingFOV,targetFOV, (1 - (widenTimer / widenTimerTotal))) ;
         }
     }
 

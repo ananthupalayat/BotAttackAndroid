@@ -5,12 +5,15 @@ using UnityEngine;
 public class PacketReturn : MonoBehaviour
 {
     PacketPool packetPool;
-    // Start is called before the first frame update
+   
     void Start()
     {
         packetPool = FindObjectOfType<PacketPool>();
     }
-
+    
+    /// <summary>
+    /// Returns to their respective pool when disabled
+    /// </summary>
     private void OnDisable()
     {
         if (packetPool != null)

@@ -10,6 +10,10 @@ public class Line : MonoBehaviour
     {
         parent = transform.root.gameObject;
     }
+
+    /// <summary>
+    /// Use to register taping on Line to parent
+    /// </summary>
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))

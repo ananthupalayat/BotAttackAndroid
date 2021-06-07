@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class Client : MonoBehaviour
 {
 
-    
 
+    #region prefab support for pooling system
     [SerializeField]
     GameObject goodPacket;
 
@@ -21,13 +21,10 @@ public class Client : MonoBehaviour
 
     [SerializeField]
     GameObject badPacketBurst;
+    #endregion
 
     [SerializeField]
-     float speed=2f;
-
-    [SerializeField]
-     float maxSpeed = 8f;
-    
+     float speed=3f;
 
     [SerializeField]
     float currentPacketSpawnRate = 10f;
@@ -39,34 +36,35 @@ public class Client : MonoBehaviour
     float bigCountDown = 10; 
     float currentBigTime = 0;
 
-    Vector3 startPos;
-    Vector3 endPos;
-
     bool someOneOnLine = false;
 
     [SerializeField]
     GameObject linePrefab;
     GameObject line;
+    int offset;
+    MeshRenderer lineMaterial;
+    Vector3 startPos;
+    Vector3 endPos;
 
-     int offset;
-     MeshRenderer lineMaterial;
 
+    #region Color Support for lines
     [SerializeField]
     Color BadConnectionColor=Color.red;
     [SerializeField]
     Color GoodConnectionColor=Color.green;
     [SerializeField]
     Color NullConnectionColor=Color.black;
+    #endregion
 
-    bool lineActive=true;
+    bool lineActive =true;
 
-    
     PacketPool packetPool;
 
-
+    #region event support
     public static event Action recieveGoodPacket;
     public static event Action DestroyedBadPacket;
     public static event Action VirusDamage;
+    #endregion
 
     Animator animator;
     
@@ -90,7 +88,7 @@ public class Client : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+
     void Update()
     {
         elapsedTime += Time.deltaTime;
@@ -104,15 +102,15 @@ public class Client : MonoBehaviour
 
         if (currentBigTime >= bigCountDown && lineActive)
         {
-            if (currentPacketSpawnRate == minimumPacketSpawnRate || speed==maxSpeed )
+            if (currentPacketSpawnRate == minimumPacketSpawnRate  )
             {
-                speed = maxSpeed;
+                
                 currentPacketSpawnRate = minimumPacketSpawnRate; 
             }
             else
             {
                 currentPacketSpawnRate -= 0.5f;
-                speed += 0.5f;
+                
             }
             currentBigTime = 0;
         }
@@ -121,6 +119,9 @@ public class Client : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Creates a new packet randomly
+    /// </summary>
     void CreatePacket()
     {
         animator.SetTrigger("Pop");
@@ -144,6 +145,11 @@ public class Client : MonoBehaviour
         packetSpawn = null;
     }
 
+    /// <summary>
+    /// Moves the packet from Client to Server
+    /// </summary>
+    /// <param name="packetIn: The packet moving on this line"></param>
+    /// <returns></returns>
     IEnumerator MovePacket(GameObject packetIn)
     {
         GameObject burst;
@@ -207,15 +213,24 @@ public class Client : MonoBehaviour
         packetIn.SetActive(false);
     }
 
+    /// <summary>
+    /// Reconnects the line after few seconds
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ReconnectLine()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         someOneOnLine = false;
         lineActive = true;
-        lineMaterial.material.color = NullConnectionColor;
         
     }
 
+    /// <summary>
+    /// Creates a line between Client and server
+    /// </summary>
+    /// <param name="start: starting position "></param>
+    /// <param name="end: destination position"></param>
+    /// <param name="width: width of the line"></param>
     void CreateLineBetweenPoints(Vector3 start, Vector3 end, float width)
     {
         var offset = end - start;
@@ -227,11 +242,14 @@ public class Client : MonoBehaviour
         line.transform.localScale = scale;
     }
 
+    /// <summary>
+    /// Disconnects the line when clicked
+    /// </summary>
     public void DisconnectLine()
     {
         lineActive = false;
-        StartCoroutine(ReconnectLine());
         lineMaterial.material.color = NullConnectionColor;
+        StartCoroutine(ReconnectLine());
     }
     
     IEnumerator TurnOffParticleSystem(GameObject particleSystem)

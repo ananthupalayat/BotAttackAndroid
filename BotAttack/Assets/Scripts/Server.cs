@@ -25,6 +25,10 @@ public  class Server : MonoBehaviour
 
     bool shieldUp = false;
 
+    //duration of shield time
+    [SerializeField]
+    float shieldDuration = 10f;
+
     [SerializeField]
     GameObject shield;
 
@@ -39,14 +43,14 @@ public  class Server : MonoBehaviour
 
     Animator animator;
 
-
+    #region Events
     public static event Action UpClient;
     public static event Action<int> VirusTerminated;
     public static event Action<int> GoodPacketRecieved;
     public static event Action<float,float> HealthUpdate;
-    public static event Action<float,int> AntiVirusUpdate;
+    public static event Action<float ,int,float> AntiVirusUpdate;
     public static event Action<float, float> CameraEvent;
-
+    #endregion
 
 
     private void OnEnable()
@@ -67,25 +71,24 @@ public  class Server : MonoBehaviour
         Client.VirusDamage -= ServerJiggle;
     }
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         tempGoodPackets = 0;
         currentHealth = MaxHealth;
         HealthUpdate?.Invoke(currentHealth,MaxHealth);
-        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
+        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost,shieldDuration);
         animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("Entry");
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
         if (tempTerminationPackages >= MaxVirusTermination)
         {
             tempTerminationPackages = 0;
             UpClient?.Invoke();
-            //CamersShake.Instance.WidenRange(ClientManager.Instance.generation);
         }
 
         
@@ -93,7 +96,7 @@ public  class Server : MonoBehaviour
         {
             tempGoodPackets = 0;
             shieldUp = true;
-            StartCoroutine(ShieldUp());
+            StartCoroutine(ShieldUp(shieldDuration));
         }
 
         //Player Dies if Health Reaches Zero
@@ -104,7 +107,9 @@ public  class Server : MonoBehaviour
     }
 
    
-
+    /// <summary>
+    /// Increments the good packet server has collected
+    /// </summary>
     void UpdateGoodPacket()
     {
         totalGoodPackets += 1;
@@ -112,10 +117,13 @@ public  class Server : MonoBehaviour
         if (!shieldUp)
         {
             tempGoodPackets += 1;
-            AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
+            AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost,shieldDuration);
         }
     }
 
+    /// <summary>
+    /// Updates bad packets terminated by server
+    /// </summary>
     void UpdateVirusPackets()
     {
         totalBadPacketsTerminated += 1;
@@ -123,6 +131,9 @@ public  class Server : MonoBehaviour
         VirusTerminated?.Invoke(totalBadPacketsTerminated);
     }
 
+    /// <summary>
+    /// Decreases health of the server
+    /// </summary>
     void RecieveDamage()
     {
         if (shieldUp) return;
@@ -131,15 +142,22 @@ public  class Server : MonoBehaviour
         HealthUpdate?.Invoke(currentHealth,MaxHealth);
     }
 
-    IEnumerator ShieldUp()
+    /// <summary>
+    /// Shields up when antivirus bar is full
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShieldUp(float duration)
     {
         shield.gameObject.SetActive(true);
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(duration+1);
         shieldUp = false;
-        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost);
+        AntiVirusUpdate?.Invoke(tempGoodPackets,MaxAntivirusBoost,duration);
         shield.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Makes server shake when recieving packet
+    /// </summary>
     void ServerJiggle()
     {
         animator.SetTrigger("Jiggle");

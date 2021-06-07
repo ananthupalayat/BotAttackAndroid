@@ -24,12 +24,15 @@ ScriptsOnlyBuild:
     - TMPro.TMP_Settings
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
+    - TMPro.TextMeshPro
     - TMPro.TextMeshProUGUI
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -122,6 +125,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13500}
     - Class: 114
       Script: {instanceID: 13730}
+    - Class: 114
+      Script: {instanceID: 13872}
     - Class: 114
       Script: {instanceID: 13988}
     - Class: 114
@@ -365,7 +370,7 @@ ScriptsOnlyBuild:
     className: AspectRatioFitter
   - hash:
       serializedVersion: 2
-      Hash: b5f4d75c9023c91c11710264abb379cd
+      Hash: c67e78f6423ada842ac5ed01c06d8fb7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UIManager
@@ -401,7 +406,7 @@ ScriptsOnlyBuild:
     className: BezierShape
   - hash:
       serializedVersion: 2
-      Hash: fa2d54784358712985c1b94b8f131128
+      Hash: ac789c686b7fb140240d9c1e93965a1c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ClientManager
@@ -533,7 +538,7 @@ ScriptsOnlyBuild:
     className: ColliderBehaviour
   - hash:
       serializedVersion: 2
-      Hash: 0e90c95dd7a5997dc6410188042f8a54
+      Hash: 36232c1278bf721701ac911e04eb3d01
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Server
@@ -947,7 +952,7 @@ ScriptsOnlyBuild:
     className: CinemachineClearShot
   - hash:
       serializedVersion: 2
-      Hash: 981fd9dda673007093671c367241a54c
+      Hash: 172dc27680e32b6b444364cbf0d0a488
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Client

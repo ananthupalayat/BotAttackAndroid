@@ -5,15 +5,17 @@ using System;
 
 public class ClientManager : MonoBehaviour
 {
-
+    //To track position of each client
     List<Transform> clientTransforms=new List<Transform>();    
    
 
     [SerializeField]
     GameObject client;
 
-    public int generation = 0;
+    //count of client created
+    int generation = 0;
 
+    //First position the client needs to be spawned
     [SerializeField]
     GameObject startinPosition;
 
@@ -35,6 +37,10 @@ public class ClientManager : MonoBehaviour
         StartCoroutine(StartGame());
     }
 
+    /// <summary>
+    /// Creates 3 clients during start of the game
+    /// </summary>
+    /// <returns></returns>
     IEnumerator StartGame()
     {
         yield return new WaitForSeconds(3);
@@ -46,11 +52,10 @@ public class ClientManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
+    /// <summary>
+    /// Creates a new client
+    /// </summary>
     int direction = 1;
     void CreateClient()
     {
@@ -61,7 +66,7 @@ public class ClientManager : MonoBehaviour
         Vector3 random;
         if (mod == 0)
         {
-            Vector3 pos = Vector3.right * UnityEngine.Random.Range(0f, 5f);
+            Vector3 pos = Vector3.right * UnityEngine.Random.Range(-3f, 3f);
             offset = Vector3.back * 10+pos;
             direction *= -1;
             RowCreated?.Invoke();
